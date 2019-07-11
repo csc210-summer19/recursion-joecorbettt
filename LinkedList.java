@@ -119,30 +119,27 @@ public class LinkedList<E extends Comparable<E>> {
 	public void removeAll(E el) {
 		// This public method requires a call to a private helper method
 		// with first as an argument. It must be recursive, no loop allowed.
-		if (first.data.equals(el)) {
-			first = first.next;
-			n--;
-		}
 		removeAll(el, first);
 	}
 
-	private void removeAll(E el, Node ref) {
-		if (ref.next == null) {
-			return;
-		}
-		if (ref.next.next == null) {
-			if (ref.next.data.equals(el)) {
-				ref.next = null;
-				n--;
-			}
-			return;
-		}
-		if (ref.next.data.equals(el)) {
-			ref.next = ref.next.next;
+	private void removeAll(E el, Node current) {
+		if (first != null && first.data.equals(el)) {
+			first = first.next;
 			n--;
-			removeAll(el, ref); // This removes duplicates
+			removeAll(el, first);
 		}
-		removeAll(el, ref.next);
+		if (first == null) {
+			return;
+		}
+		if (current.next != null) {
+			if (current.next.data.equals(el)) {
+				current.next = current.next.next;
+				n--;
+				removeAll(el, current);
+			} else {
+				removeAll(el, current.next);
+			}
+		}
 	}
 
 	// Duplicate el next to each occurrence of el in this list.
